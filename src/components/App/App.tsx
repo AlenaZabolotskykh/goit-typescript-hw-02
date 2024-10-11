@@ -23,7 +23,7 @@ export default function App() {
 
   type Response = {
     results: Image[];
-    total_pages: number
+    total_pages: number;
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function App() {
     const fetchData = async (): Promise<void> => {
       try {
         setIsLoading(true);
-        const { results, total_pages }:Response = await getImage(query, page); // ??????
+        const { results, total_pages } = await getImage(query, page); // ??????
         setImages((prevImages) => [...prevImages, ...results]);
         setIsVisible(page < total_pages);
       } catch (error: any) {
