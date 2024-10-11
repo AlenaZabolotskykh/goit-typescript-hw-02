@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getImage } from "../../getImage";
 import SearchBar from "../SearchBar/SearchBar";
+import axios from "axios";
 
 import ImageGallery from "../ImageGallery/ImageGallery";
 import Loader from "../Loader/Loader";
@@ -8,6 +9,7 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "../ImageModal/ImageModal";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { Image } from "./App.types";
+import { Response } from "../../getImage";
 
 import "./App.css";
 
@@ -21,10 +23,7 @@ export default function App() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalImage, setModalImage] = useState<Image | null>(null);
 
-  type Response = {
-    results: Image[];
-    total_pages: number;
-  };
+  const KEY = "ed2sR4g0UcheyXSFHmZdb1MPIy4PjZh6mMedQmRfHO8";
 
   useEffect(() => {
     if (!query) {
@@ -33,7 +32,7 @@ export default function App() {
     const fetchData = async (): Promise<void> => {
       try {
         setIsLoading(true);
-        const { results, total_pages } = await getImage(query, page); // ??????
+        const { results, total_pages }: Response = await getImage(query, page); // ??????
         setImages((prevImages) => [...prevImages, ...results]);
         setIsVisible(page < total_pages);
       } catch (error: any) {
