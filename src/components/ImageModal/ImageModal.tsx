@@ -1,9 +1,14 @@
 import Modal from "react-modal";
 import css from "./ImageModal.module.css";
+import { ImageModalProps } from "./ImageModal.types";
 
 Modal.setAppElement("#root");
 
-export default function ImageModal({ isOpen, onClose, image }) {
+export default function ImageModal({
+  isOpen,
+  onClose,
+  image,
+}: ImageModalProps) {
   return (
     <Modal
       className={css.modal}
@@ -12,7 +17,7 @@ export default function ImageModal({ isOpen, onClose, image }) {
       overlayClassName={css.overlay}
     >
       <div>
-        <img src={image.src.regular} alt={image.alt} />
+        <img src={image.urls.regular} alt={image.alt_description} />
         <button className={css.btn} onClick={onClose}>
           Close
         </button>

@@ -1,6 +1,10 @@
 import css from "./ImageGallery.module.css";
 import ImageCard from "../ImageCard/ImageCard";
-export default function ImageGallery({ images, handleClickOnImage }) {
+import { ImageGalleryProps } from "./imageGallery.types";
+export default function ImageGallery({
+  images,
+  handleClickOnImage,
+}: ImageGalleryProps) {
   return (
     <ul className={css.list}>
       {images.map(({ alt_description, id, urls }) => (
@@ -8,7 +12,9 @@ export default function ImageGallery({ images, handleClickOnImage }) {
           <ImageCard
             alt={alt_description}
             src={urls}
-            handleClickOnImage={handleClickOnImage}
+            handleClickOnImage={() =>
+              handleClickOnImage({ alt_description, id, urls })
+            }
           />
         </li>
       ))}

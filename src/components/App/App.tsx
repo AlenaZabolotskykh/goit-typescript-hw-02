@@ -7,32 +7,37 @@ import Loader from "../Loader/Loader";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "../ImageModal/ImageModal";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { Image } from "./App.types";
 
 import "./App.css";
 
 export default function App() {
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState("1");
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  // const [isEmpty, setIsEmpty] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalImage, setModalImage] = useState(null);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [images, setImages] = useState<Image[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalImage, setModalImage] = useState<Image | null>(null);
+
+  type Response = {
+    results: Image[];
+    total_pages: number
+  };
 
   useEffect(() => {
     if (!query) {
       return;
     }
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         setIsLoading(true);
-        const { results, total_pages } = await getImage(query, page);
+        const { results, total_pages }:Response = await getImage(query, page); // ??????
         setImages((prevImages) => [...prevImages, ...results]);
         setIsVisible(page < total_pages);
-      } catch (error) {
-        setError(error);
+      } catch (error: any) {
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -40,7 +45,7 @@ export default function App() {
     fetchData();
   }, [page, query]);
 
-  const onHandleSubmit = (value) => {
+  const onHandleSubmit = (value: string) => {
     setQuery(value);
     setImages([]);
     setPage(1);
@@ -52,7 +57,7 @@ export default function App() {
     setPage(page + 1);
   };
 
-  function openModal(image) {
+  function openModal(image: Image) {
     setModalImage(image);
     setModalOpen(true);
   }
